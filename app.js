@@ -10,15 +10,28 @@ app.get("/", (req, res) => {
   return res.status(200).send("Hello World");
 });
 
-app.get("/get-student-info/:registrationNumber", (req, res) => {
-  let registrationNumber = req.params.registrationNumber;
-  const studentName = STUDENTS[registrationNumber];
-  if (studentName) {
-    return res.status(200).send(studentName);
+app.get("/get-student-info/:registrationNumber", async (req, res) => {
+  try {
+    let registrationNumber = req.params.registrationNumber;
+    const studentInfo = await Student.findOne({ registrationNumber });
+    if (studentInfo) {
+      console.info(
+        `Student with Registration Number ${registrationNumber} was successfully found.`
+      );
+      return res.status(200).send(studentInfo);
+    }
+    console.info(
+      `Student with Registration Number ${registrationNumber} was not found.`
+    );
+    return res.status(404).send({
+      message: "Invalid Registration Number",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      message: "An error occurred",
+    });
   }
-  return res.status(404).send({
-    message: "Invalid Registration Number",
-  });
 });
 
 app.post("/add-student", async (req, res) => {
