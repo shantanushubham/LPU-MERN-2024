@@ -34,6 +34,9 @@ const StudentSchema = mongoose.Schema({
     min: [9_999_999, "Please enter a valid 8 digit registration number."],
     max: [1_000_000_000, "Please enter a valid 8 digit registration number."],
   },
+  city: {
+    type: String,
+  },
 });
 
 const StudentModel = mongoose.model("students", StudentSchema);
