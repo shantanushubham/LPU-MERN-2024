@@ -15,24 +15,25 @@ const BookSchema = mongoose.Schema({
     unique: true,
     validate: [
       (isbn) => {
-        let n = isbn.length;
-        if (n != 10) {
+        isbn = `${isbn}`.replace(/[-\s]/g, "");
+        // ISBN-13 must be 13 digits long
+        if (isbn.length !== 13) {
           return false;
         }
+        // Ensure all characters are digits
+        if (!/^\d{13}$/.test(isbn)) {
+          return false;
+        }
+        // Calculate the checksum using the ISBN-13 algorithm
         let sum = 0;
-        for (let i = 0; i < 9; i++) {
-          let digit = isbn[i] - "0";
-          if (0 > digit || 9 < digit) {
-            return false;
-          }
-          sum += digit * (10 - i);
+        for (let i = 0; i < 12; i++) {
+          let digit = parseInt(isbn[i], 10);
+          sum += i % 2 === 0 ? digit : digit * 3;
         }
-        let last = isbn[9];
-        if (last != "X" && (last < "0" || last > "9")) {
-          return false;
-        }
-        sum += last == "X" ? 10 : last - "0";
-        return sum % 11 == 0;
+        // Calculate the check digit
+        let checkDigit = (10 - (sum % 10)) % 10;
+        // Validate the check digit
+        return checkDigit === parseInt(isbn[12], 10);
       },
       "Please enter a valid ISBN",
     ],
@@ -41,7 +42,7 @@ const BookSchema = mongoose.Schema({
     // 6
     type: Number,
     min: 0,
-    default: 0,
+    default: 1,
   },
   boughtOn: {
     type: Date,

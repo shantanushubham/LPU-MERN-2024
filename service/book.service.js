@@ -36,4 +36,12 @@ const getBookByIsbn = async (isbnNumber) => {
   }
 };
 
-module.exports = { addBook, getBookByIsbn };
+const updateBook = async (bookAfterUpdate) => {
+  return await bookRepository.updateBook(bookAfterUpdate);
+};
+
+const deleteBook = async (isbn) => {
+  return await bookRepository.deleteBook(isbn);
+};
+
+module.exports = { addBook, getBookByIsbn, updateBook, deleteBook };

@@ -4,10 +4,11 @@ const PORT = 8080;
 require("./connect-db");
 const studentRouter = require("./routes/student.route");
 const bookRouter = require("./routes/book.route");
+const { bookMiddleware } = require("./middleware/book.middleware");
 
 app.use(express.json());
 app.use("/student", studentRouter);
-app.use("/book", bookRouter);
+app.use("/book", bookMiddleware, bookRouter);
 
 app.get("/", (req, res) => {
   return res.status(200).send("Hello World");
