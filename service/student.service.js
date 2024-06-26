@@ -1,7 +1,9 @@
 const studentRepository = require("../repository/student.repository");
+const { encode, check } = require("../util/bcrypt");
 
 const addStudent = async (studentInfo) => {
   try {
+    studentInfo.password = encode(studentInfo.password);
     const student = await studentRepository.addStudent(studentInfo);
     console.info("Successfully saved student");
     return student;
@@ -44,7 +46,7 @@ const deleteStudent = async (registrationNumber) => {
 
 const loginStudent = async (registrationNumber, password) => {
   const student = await getStudentByRegistrationNumber(registrationNumber);
-  if (student && student.password === password) {
+  if (student && check(student.password, password)) {
     return student;
   }
   return null;
