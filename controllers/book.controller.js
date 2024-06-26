@@ -3,6 +3,11 @@ const bookService = require("../service/book.service");
 const addBook = async (req, res, next) => {
   try {
     const bookInfo = req.body;
+    if (bookInfo.category !== req.week) {
+      return res.status(403).send({
+        message: `Its ${req.week} week!!!`,
+      });
+    }
     const book = await bookService.addBook(bookInfo);
     return res.status(201).send(book);
   } catch (err) {

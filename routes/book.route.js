@@ -1,35 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const bookController = require("../controllers/book.controller");
+const {
+  isClassRepresentativeMiddleware,
+} = require("../middleware/student.middleware");
 
-router.post("/add", bookController.addBook);
+router.post("/add", isClassRepresentativeMiddleware, bookController.addBook);
 router.get("/:isbnNumber", bookController.getBookByIsbn);
-router.put("/", bookController.updateBook);
-router.delete("/:isbnNumber", bookController.deleteBook);
+router.put("/", isClassRepresentativeMiddleware, bookController.updateBook);
+router.delete(
+  "/:isbnNumber",
+  isClassRepresentativeMiddleware,
+  bookController.deleteBook
+);
 
 module.exports = router;
 
-// const router1 = {
-//   post: function (string, ...callbacks) {
-//     // Some operation with string
-//     for (let callback of callbacks) {
-//       callback();
-//     }
-//   },
-// };
-
-// router1.post(
-//   "/hello",
-//   () => {
-//     console.log("Hello 1");
-//   },
-//   () => {
-//     console.log("Hello 2");
-//   },
-//   () => {
-//     console.log("Hello 3");
-//   },
-//   () => {
-//     console.log("Hello 4");
-//   }
-// );
+/**
+ * Create a Middleware that allows a CR to only add Fiction/Non-Fiction books depending on
+ * what week it is!
+ * Consider week is hard coded in your code. [FICTION, NON-FICTION]
+ */

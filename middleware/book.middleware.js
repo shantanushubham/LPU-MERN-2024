@@ -1,6 +1,8 @@
-const bookMiddleware = (req, res, next) => {
-  console.log("This is Book Middleware");
+const WEEK = "Fiction";
+
+const bookWeekMiddleware = (req, res, next) => {
+  req.week = WEEK;
   next();
 };
 
-module.exports = { bookMiddleware };
+module.exports = { bookWeekMiddleware };

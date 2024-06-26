@@ -42,9 +42,18 @@ const deleteStudent = async (registrationNumber) => {
   return await studentRepository.deleteStudent(registrationNumber);
 };
 
+const loginStudent = async (registrationNumber, password) => {
+  const student = await getStudentByRegistrationNumber(registrationNumber);
+  if (student && student.password === password) {
+    return student;
+  }
+  return null;
+};
+
 module.exports = {
   addStudent,
   getStudentByRegistrationNumber,
   updateStudent,
   deleteStudent,
+  loginStudent,
 };

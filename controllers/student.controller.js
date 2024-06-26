@@ -1,4 +1,5 @@
 const studentService = require("../service/student.service");
+const { generateToken } = require("../util/jwt");
 
 const addStudent = async (req, res) => {
   try {
@@ -64,9 +65,32 @@ const deleteStudent = async (req, res) => {
   }
 };
 
+const loginStudent = async (req, res) => {
+  try {
+    const { registrationNumber, password } = req.body;
+    const student = await studentService.loginStudent(
+      registrationNumber,
+      password
+    );
+    if (!student) {
+      return res.status(400).send({
+        message: "Invalid Credentials",
+      });
+    }
+    const token = generateToken({
+      registrationNumber: student.registrationNumber,
+    });
+    return res.status(200).send({ student, token });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "An error occurred" });
+  }
+};
+
 module.exports = {
   addStudent,
   getStudentByRegistrationNumber,
   updateStudent,
   deleteStudent,
+  loginStudent,
 };

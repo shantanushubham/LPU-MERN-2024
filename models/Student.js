@@ -37,6 +37,14 @@ const StudentSchema = mongoose.Schema({
   city: {
     type: String,
   },
+  isClassRepresentative: {
+    type: Boolean,
+    default: false,
+  },
+  password: {
+    type: String,
+    validate: (password) => password.length >= 8,
+  },
 });
 
 const StudentModel = mongoose.model("students", StudentSchema);
