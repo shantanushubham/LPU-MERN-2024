@@ -1,4 +1,3 @@
-const { isObjectIdOrHexString } = require("mongoose");
 const IssueRecordModel = require("../models/IssueRecord");
 
 const addIssueRecord = async (issueRecordInfo) => {
@@ -19,7 +18,7 @@ const getIssueRecordById = async (issueRecordId) => {
       console.info(`No issue record was found for ID: ${issueRecordId}`);
     } else {
       console.info(
-        `Issue record with ID: ${issueRecord} was successfully found.`
+        `Issue record with ID: ${issueRecordId} was successfully found.`
       );
     }
     return issueRecord;
@@ -87,12 +86,12 @@ const deleteIssueRecord = async (issueRecordId) => {
     });
     if (!deleteResult.matchedCount) {
       console.info(
-        `Delete Failed! Issue Record with ID: ${issueRecord.id} doesn't exist`
+        `Delete Failed! Issue Record with ID: ${issueRecordId} doesn't exist`
       );
       return false;
     }
     console.info(
-      `Delete Success! Issue Record with ID: ${issueRecord.id} was deleted`
+      `Delete Success! Issue Record with ID: ${issueRecordId} was deleted`
     );
     return true;
   } catch (err) {

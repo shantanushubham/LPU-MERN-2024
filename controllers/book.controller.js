@@ -10,7 +10,7 @@ const addBook = async (req, res, next) => {
     }
     const book = await bookService.addBook(bookInfo);
     return res.status(201).send(book);
-  } catch (err) {
+  } catch {
     return res.status(500).send({
       message: "Error occurred",
     });

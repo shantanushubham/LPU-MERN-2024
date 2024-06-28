@@ -7,5 +7,6 @@ router.get("/:issueRecordId", issueRecordController.getIssueRecordById);
 router.get("/filter", issueRecordController.getIssueRecordsByFilters);
 router.put("/", issueRecordController.updateIssueRecord);
 router.delete("/:issueRecordId", issueRecordController.deleteIssueRecord);
+router.get("/late-fine/:issueRecordId", issueRecordController.getLateFine);
 
 module.exports = router;

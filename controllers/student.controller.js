@@ -6,7 +6,7 @@ const addStudent = async (req, res) => {
     const studentInfo = req.body;
     const student = await studentService.addStudent(studentInfo);
     return res.status(201).send(student);
-  } catch (err) {
+  } catch {
     return res.status(500).send({
       message: "Error occurred",
     });

@@ -1,5 +1,6 @@
-const BookUnavailableException = require("../eceptions/BookUnavailable");
-const DuplicateIssueException = require("../eceptions/DuplicateIssue");
+const BookUnavailableException = require("../exceptions/BookUnavailable");
+const DuplicateIssueException = require("../exceptions/DuplicateIssue");
+const NotFoundException = require("../exceptions/NotFoundException");
 const issueRecordService = require("../service/issueRecord.service");
 
 const addIssueRecord = async (req, res) => {
@@ -85,11 +86,11 @@ const deleteIssueRecord = async (req, res) => {
     );
     if (!wasDeleted) {
       return res.status(404).send({
-        message: `Delete Failed! Issue Record with ID: ${issueRecord.id} doesn't exist`,
+        message: `Delete Failed! Issue Record with ID: ${issueRecordId} doesn't exist`,
       });
     }
     return res.status(200).send({
-      message: `Delete Success! Issue Record with ID: ${issueRecord.id} was deleted.`,
+      message: `Delete Success! Issue Record with ID: ${issueRecordId} was deleted.`,
     });
   } catch (err) {
     console.error(err);
@@ -99,10 +100,56 @@ const deleteIssueRecord = async (req, res) => {
   }
 };
 
+const getLateFine = async (req, res) => {
+  try {
+    const { issueRecordId } = req.params;
+    const lateFine = await issueRecordService.getLateFine(issueRecordId);
+    if (!lateFine) {
+      return res.status(404).send({
+        message: `Issue Record with ID: ${issueRecordId} doesn't exist.`,
+      });
+    }
+    return res.status(200).send({ lateFine });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      message: "An Internal Server Error occurred",
+    });
+  }
+};
+
+const submitBook = async (req, res) => {
+  try {
+    const { issueRecordId } = req.params;
+    const lateFine = await issueRecordService.submitBook(issueRecordId);
+    if (lateFine === false) {
+      return res.status(417).send({
+        message: "Could not submit book",
+      });
+    }
+    return res.status(200).send({
+      lateFine,
+      message: "Submission Successful",
+    });
+  } catch (err) {
+    const message = err.message;
+    switch (true) {
+      case err instanceof NotFoundException:
+        return res.status(404).send({ message });
+      default:
+        return res.status(500).send({
+          message: "An Internal Server Error occurred",
+        });
+    }
+  }
+};
+
 module.exports = {
   addIssueRecord,
   getIssueRecordById,
   getIssueRecordsByFilters,
   updateIssueRecord,
   deleteIssueRecord,
+  getLateFine,
+  submitBook,
 };
