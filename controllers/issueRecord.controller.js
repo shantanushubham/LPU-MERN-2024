@@ -1,3 +1,5 @@
+const BookUnavailableException = require("../eceptions/BookUnavailable");
+const DuplicateIssueException = require("../eceptions/DuplicateIssue");
 const issueRecordService = require("../service/issueRecord.service");
 
 const addIssueRecord = async (req, res) => {
@@ -7,9 +9,16 @@ const addIssueRecord = async (req, res) => {
     return res.status(201).send(newIssueRecord);
   } catch (err) {
     console.error(err);
-    return res.status(500).send({
-      message: "Adding new Issue Record failed!",
-    });
+    switch (true) {
+      case err instanceof DuplicateIssueException:
+        return res.status(417).send({ message: err.message });
+      case err instanceof BookUnavailableException:
+        return res.status(404).send({ message: err.message });
+      default:
+        return res.status(500).send({
+          message: "Adding new Issue Record failed!",
+        });
+    }
   }
 };
 

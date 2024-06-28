@@ -1,12 +1,13 @@
 const { isObjectIdOrHexString } = require("mongoose");
 const IssueRecordModel = require("../models/IssueRecord");
 
-const addIssueRecord = async (issueRecord) => {
+const addIssueRecord = async (issueRecordInfo) => {
   try {
-    const issueRecord = await new IssueRecordModel(issueRecord).save();
+    const issueRecord = await new IssueRecordModel(issueRecordInfo).save();
     console.info("Successfully saved new issue record");
+    return issueRecord;
   } catch (err) {
-    console.err("Creation of issue record failed.", err);
+    console.error("Creation of issue record failed.", err);
     return null;
   }
 };
