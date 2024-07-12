@@ -12,7 +12,7 @@ const addBook = async (bookInfo) => {
     console.info("Successfully saved book");
     return book;
   } catch (err) {
-    console.error("Book save failed.");
+    console.error("Book save failed.", err);
     throw err;
   }
 };

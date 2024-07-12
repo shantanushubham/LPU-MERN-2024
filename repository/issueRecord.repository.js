@@ -34,12 +34,12 @@ const getIssueRecordById = async (issueRecordId) => {
 const updateIssueRecord = async (issueRecord) => {
   try {
     const updateResult = await IssueRecordModel.updateOne(
-      { _id: issueRecord.id },
+      { _id: issueRecord._id },
       { $set: { ...issueRecord } }
     );
     if (!updateResult.matchedCount) {
       console.info(
-        `Update Failed! Issue Record with ID: ${issueRecord.id} doesn't exist`
+        `Update Failed! Issue Record with ID: ${issueRecord._id} doesn't exist`
       );
       return false;
     }
@@ -70,7 +70,9 @@ const getIssueRecordsByFilters = async (filterObject) => {
       // TODO:
       // Some query with the help of which we can get objects whose issue date is before the given end date
     }
-    const issueRecordList = await IssueRecordModel.find(queryObject);
+    const issueRecordList = await IssueRecordModel.find(queryObject).populate(
+      "book"
+    );
     console.info(`Found ${issueRecordList.length} records by filters`);
     return issueRecordList;
   } catch (err) {

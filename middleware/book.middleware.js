@@ -1,7 +1,7 @@
-const WEEK = "Fiction";
+// const WEEK = "Fiction";
 
 const bookWeekMiddleware = (req, res, next) => {
-  req.week = WEEK;
+  // req.week = WEEK;
   next();
 };
 

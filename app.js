@@ -9,6 +9,9 @@ const {
   isClassRepresentativeMiddleware,
 } = require("./middleware/student.middleware");
 const issueRecordRoute = require("./routes/issueRecord.route");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(express.json());
 app.use("/student", studentRouter);

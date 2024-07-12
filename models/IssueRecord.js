@@ -31,6 +31,14 @@ const IssueRecordSchema = mongoose.Schema({
     min: 0,
   },
 });
+IssueRecordSchema.virtual("book", {
+  ref: "book",
+  localField: "bookIsbnNo",
+  foreignField: "isbn",
+  justOne: true,
+});
+IssueRecordSchema.set("toObject", { virtuals: true });
+IssueRecordSchema.set("toJSON", { virtuals: true });
 
 const IssueRecordModel = mongoose.model("issue-record", IssueRecordSchema);
 module.exports = IssueRecordModel;
