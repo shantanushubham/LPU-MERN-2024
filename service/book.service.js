@@ -17,6 +17,12 @@ const addBook = async (bookInfo) => {
   }
 };
 
+const getAllBooks = async () => {
+  const books = await bookRepository.getAllBooks();
+  console.log(`Found ${books.length} books`);
+  return books;
+};
+
 const getBookByIsbn = async (isbnNumber) => {
   try {
     const book = await bookRepository.getBookByIsbn(isbnNumber);
@@ -44,4 +50,10 @@ const deleteBook = async (isbn) => {
   return await bookRepository.deleteBook(isbn);
 };
 
-module.exports = { addBook, getBookByIsbn, updateBook, deleteBook };
+module.exports = {
+  addBook,
+  getAllBooks,
+  getBookByIsbn,
+  updateBook,
+  deleteBook,
+};

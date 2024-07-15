@@ -19,6 +19,18 @@ const addBook = async (req, res, next) => {
   }
 };
 
+const getAllBooks = async (req, res, next) => {
+  try {
+    const books = await bookService.getAllBooks();
+    return res.status(200).send(books);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      message: "Error occurred!",
+    });
+  }
+};
+
 const getBookByIsbn = async (req, res) => {
   try {
     let { isbnNumber } = req.params;
@@ -71,6 +83,7 @@ const deleteBook = async (req, res) => {
 
 module.exports = {
   addBook,
+  getAllBooks,
   getBookByIsbn,
   updateBook,
   deleteBook,

@@ -6,6 +6,11 @@ const {
 } = require("../middleware/student.middleware");
 
 router.post("/add", isClassRepresentativeMiddleware, bookController.addBook);
+router.get(
+  "/get/all",
+  isClassRepresentativeMiddleware,
+  bookController.getAllBooks
+);
 router.get("/:isbnNumber", bookController.getBookByIsbn);
 router.put("/", isClassRepresentativeMiddleware, bookController.updateBook);
 router.delete(

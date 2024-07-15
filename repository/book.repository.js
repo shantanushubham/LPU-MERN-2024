@@ -5,6 +5,8 @@ const addBook = async (bookInfo) => {
   return await book.save();
 };
 
+const getAllBooks = async () => await BookModel.find();
+
 const getBookByIsbn = async (isbnNumber) => {
   return await BookModel.findOne({ isbn: isbnNumber });
 };
@@ -35,6 +37,7 @@ const deleteBook = async (isbn) => {
 
 module.exports = {
   addBook,
+  getAllBooks,
   getBookByIsbn,
   updateBook,
   deleteBook,
